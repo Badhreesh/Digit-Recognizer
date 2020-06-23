@@ -5,6 +5,7 @@ from flask_cors import CORS, cross_origin
 from tensorflow.keras.models import load_model
 import traceback
 import numpy as np
+import os
 
 # Module imports
 from utils import preprocess, data_uri_to_cv2_img
@@ -28,7 +29,7 @@ def predict():
         img = preprocess(data_uri_to_cv2_img(img))
         probabilities = model.predict(img)
         prediction = np.argmax(probabilities)
-        return f'You drew a {prediction}'
+        return 'You drew a {}'.format(prediction)
 
     except:
         return jsonify({'trace': traceback.format_exc()})
@@ -39,4 +40,4 @@ if __name__ == '__main__':
     model = load_model('model/mnist_model.h5')
 
     print('model loaded')
-    app.run(debug=True, port=8000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
