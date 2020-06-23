@@ -9,7 +9,7 @@ let original_text = result.textContent;
 const ctx = canvas.getContext('2d');
 ctx.lineJoin = 'round';
 ctx.lineCap = 'round';
-ctx.lineWidth = 12;
+ctx.lineWidth = 10;
 ctx.strokeStyle = "#fff";
 
 let isDrawing = false;
@@ -64,12 +64,11 @@ predictButton.addEventListener("click", function() {
     let fd = new FormData(document.forms["form1"]);
 
     let xhr = new XMLHttpRequest({mozSystem: true});
-    xhr.open('POST', 'http://127.0.0.1:8000/predict', true);
+    xhr.open('POST', 'http://0.0.0.0:8000/predict', true);
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState == XMLHttpRequest.DONE) {
         result.innerHTML = xhr.responseText;
-
       }
     }
     xhr.send(fd);
