@@ -9,8 +9,5 @@ COPY . .
 # install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# tell the port number the container should expose
-EXPOSE 8000
-
 # run the command
-CMD ["python", "./app.py"]
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi

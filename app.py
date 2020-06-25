@@ -16,6 +16,10 @@ app = Flask(__name__)
 # Allow Cross-Origin Resource Sharing
 cors = CORS(app)
 
+# Load the saved model
+model = load_model('model/mnist_model.h5')
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -34,10 +38,6 @@ def predict():
     except:
         return jsonify({'trace': traceback.format_exc()})
 
+# Start flask app
 if __name__ == '__main__':
-
-    # Load the saved model
-    model = load_model('model/mnist_model.h5')
-
-    print('model loaded')
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
