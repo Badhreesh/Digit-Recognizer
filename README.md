@@ -7,13 +7,17 @@ Access a live version of the app here: http://digit-recognizer-v1.herokuapp.com/
 This app allows the user to interact with a deep neural network (DNN) trained on the MNIST dataset. The user can draw a digit anywhere on the canvas provided. Upon pressing the **Predict** button, the drawn digit will be sent to the Python backend where it is processed and classified by the DNN. The result is then sent back to the frontend for the user to see. Press **Clear** to clear the canvas and draw a new digit.
 
 # How to run this project:
+If you would like to dig into the code and make a first run yourself, follow the steps below:
+
 1) Clone the repo
   > https://github.com/Badhreesh/Digit-Recognizer.git
+  
 2) Create a virtual environment. Use virtualenv to create a virtual environment named **venv** running python3.6, type the following:
   > virtualenv --python=python3.6 venv
   
   Access the virtual environment by:
   > source venv/bin/activate
+  
 3) Install all dependencies needed to run the app
   > pip install -r requirements.txt
   
@@ -21,6 +25,11 @@ This app allows the user to interact with a deep neural network (DNN) trained on
   
 4) Run the application using:
   > python app.py
+  
+ 5) In a browser, type:
+  > localhost:5000
+  
+  This will load the entire application on screen and you can interact with it.
 
 # File Descriptions
 
