@@ -1,11 +1,10 @@
 # General imports
-import tensorflow as tf
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS, cross_origin
-from tensorflow.keras.models import load_model
 import traceback
 import numpy as np
 import os
+import onnxruntime as rt
 
 # Module imports
 from utils import preprocess, data_uri_to_cv2_img
@@ -16,9 +15,15 @@ app = Flask(__name__)
 # Allow Cross-Origin Resource Sharing
 cors = CORS(app)
 
-# Load the saved model
-model = load_model('model/mnist_model.h5')
+sess_options = rt.SessionOptions()
+sess_options.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
+sess_options.graph_optimization_level = rt.GraphOptimizationLevel.ORT_ENABLE_ALL
 
+session = rt.InferenceSession('model/model.onnx', sess_options=sess_options)
+# get the I/O names
+input_names = session.get_inputs()[0].name
+print(session.get_inputs()[0].type)
+output_names = [session.get_outputs()[ii].name for ii in range(len(session.get_outputs()))]
 
 @app.route('/')
 def home():
@@ -28,10 +33,9 @@ def home():
 @cross_origin()
 def predict():
     try:
-        #img = request.files['data'].read() ## byte file
         img = request.form.get('data')
         img = preprocess(data_uri_to_cv2_img(img))
-        probabilities = model.predict(img)
+        probabilities = session.run(output_names, {input_names: img.astype(np.float32)})[0]
         prediction = np.argmax(probabilities)
         return 'You drew a {}'.format(prediction)
 
